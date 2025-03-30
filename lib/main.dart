@@ -1,0 +1,791 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MikronoteApp());
+}
+
+class MikronoteApp extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+      home: HalamanUtama(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class HalamanUtama extends StatefulWidget {
+  @override
+  State<HalamanUtama> createState() => _HalamanUtama();
+}
+
+class _HalamanUtama extends State<HalamanUtama>{
+
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    NotificationPage(),
+    BookmarkPage(),
+    ProfilePage(),
+  ];
+
+  void _onTappedItem(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar:  _selectedIndex == 3
+        ? AppBar(
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingPage())
+                );
+              }, 
+              icon: Icon(Icons.settings))
+        ],
+        backgroundColor: Colors.red[400],
+        )
+        :AppBar(
+        backgroundColor: Colors.grey[50],
+        title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: "μikro",
+                  style: TextStyle(
+                    color: Colors.red[400],
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+                TextSpan(
+                  text: "Note",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
+                  )
+                )
+              ]
+            )
+          )
+        ),
+      drawer: _selectedIndex == 3 ? null : Drawer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UserAccountsDrawerHeader(
+                  accountName: Text("Your Name"),
+                  accountEmail: Text("Email@google.com"),
+                decoration: BoxDecoration(
+                  color: Colors.red[400]
+                ),
+                currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage("https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600"),
+                  radius: 35,
+                ),
+              ),
+              ListTile(
+                title: Text("Settings"),
+                onTap: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=> SettingPage()));
+                }
+              ),
+              ListTile(
+                title: Text("Logout"),
+                trailing: Icon(Icons.logout_rounded),
+                onTap: (){},
+              ),
+            ],
+          )
+      ),
+      body: _pages[_selectedIndex],
+
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.grey[50],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.red[400],
+          onTap: _onTappedItem,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: ''
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: ''
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark),
+                label: ''
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_rounded),
+                label: ''
+            ),
+          ]
+        ),
+      );
+  }
+}
+
+class SettingPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
+            color: Colors.red[400],
+            child: Row(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage("https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600"),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          print("Ganti foto profil diklik!");
+                        },
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Colors.black54,
+                          child: Icon(Icons.camera_alt, size: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 16,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Your Name", style: TextStyle(
+                        color: Colors.grey[50],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24
+                    ),
+                    ),
+                    Text("email@gmail.com", style: TextStyle(
+                        color: Colors.grey[50],
+                        fontSize: 16
+                    ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.grey[50]
+              ),
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.person_2_outlined),
+                    title: Text("Change Profile"),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeProfilePage()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.archive_outlined),
+                    title: Text("Archive"),
+                    onTap: (){
+
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.notifications_active_outlined),
+                    title: Text("Activity Center"),
+                    onTap: (){
+
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.add_circle_outline),
+                    title: Text("Add Account"),
+                    onTap: (){
+
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout_rounded),
+                    title: Text("Logout"),
+                    onTap: (){
+
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NewPostPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.grey[200],
+        title: Text("New Post"),
+      ),
+      body: Container(
+        padding: EdgeInsets.only(left: 16),
+        child: TextField(
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: "Apa yang kamu pikirkan",
+            border: InputBorder.none
+          ),
+          style: TextStyle(fontSize: 15),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+        )
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            print("Terkirim");
+          },
+          backgroundColor: Colors.red[400],
+          child: Icon(Icons.send, color: Colors.grey[50],),
+      ),
+    );
+  }
+}
+
+class ChangeProfilePage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Change Profile"),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatefulWidget{
+  final String username;
+
+  DetailPage({required this.username});
+
+  _DetailPage createState() => _DetailPage();
+}
+
+class _DetailPage extends State<DetailPage>{
+  bool isFollowing = false;
+
+  void toggleFollow() {
+    setState(() {
+      isFollowing = !isFollowing;
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[400],
+      ),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.red[400],
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+            ),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                    "https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600",
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Text(
+                  widget.username,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[50],
+                  ),
+                ),
+                Text(
+                  "Email@google.com",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[50],
+                  ),
+                ),
+                SizedBox(height: 10,),
+                
+                ElevatedButton(
+                    onPressed: toggleFollow,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.red[400],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(isFollowing ? "Following" : "Follow"))
+                ,
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "50",
+                          style: TextStyle(
+                            color: Colors.grey[50],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          "Postingan",
+                          style: TextStyle(
+                            color: Colors.grey[50],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 40,),
+                    Column(
+                      children: [
+                        Text(
+                          "1.2k",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.grey[50],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "Followers",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[50],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+class HomePage extends StatefulWidget{
+  State<HomePage> createState() => _HomePage();
+}
+
+class _HomePage extends State<HomePage> {
+
+  final List<Map<String, String>> posts = [
+    {
+      "username" : "Alissa Rania",
+      "date" : "12 Januari 2025",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro! Ea blanditiis reiciendis ut incidunt saepe qui nesciunt mollitia. In laboriosam cupiditate ab officiis quidem a tempora assumenda At voluptas rerum est animi dolorum?"
+    },
+    {
+      "username" : "Farra Sabiila",
+      "date" : "9 Maret 2025",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!"
+    },
+    {
+      "username" : "Anieen",
+      "date" : "1 Maret 2025",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!"
+    },
+    {
+      "username" : "AbeAbeAbe",
+      "date" : "1 Oktober 2024",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Eum dolores assumenda vel eveniet natus et voluptas molestiae et quas sint hic veritatis odit et obcaecati nihil et quia odio. Nam ipsum possimus 33 odio laudantium aut expedita iste rem pariatur unde ut voluptatibus doloremque."
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NewPostPage()),
+          );
+        },
+        backgroundColor: Colors.red[400],
+        child: Icon(Icons.add, color: Colors.grey[50]),
+      ),
+      body: ListView.builder(
+        itemCount: posts.length,
+          itemBuilder: (context, index){
+            final post = posts[index];
+            return Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 2),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 24,
+                        backgroundColor: Colors.grey,
+                        child: Icon(Icons.person),
+                      ),
+                      SizedBox(width: 20,),
+                      Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => DetailPage(username:post["username"]!))
+                                  );
+                                },
+                                child : Text(
+                                  post["username"]!,
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
+                              ),
+                              Text(
+                                post["date"]!,
+                                style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                              )
+                            ],
+                          ),
+                      ),
+                      PopupMenuButton(
+                        itemBuilder: (context)=> [
+                          PopupMenuItem(
+                              child: Text("Block"),
+                          ),
+                          PopupMenuItem(
+                              child: Text("Report")
+                          )
+                        ],
+                        icon: Icon(Icons.more_vert, color: Colors.grey[600],),
+                        color: Colors.grey[200],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  Text(
+                    post["title"]!,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Text(
+                    post["content"]!,
+                  ),
+                  SizedBox(height: 16,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Icon(Icons.favorite_border,
+                              color: Colors.grey[600], size: 20),
+                        ],
+                      ),
+                      SizedBox(width: 20),
+                      Column(
+                        children: [
+                          Icon(Icons.comment_outlined,
+                              size: 20, color: Colors.grey[600]),
+                        ],
+                      ),
+                      SizedBox(width: 20),
+                      Column(
+                        children: [
+                          Icon(Icons.share_outlined,
+                              size: 20, color: Colors.grey[600]),
+                        ],
+                      ),
+                      Spacer(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          }
+      ),
+    );
+  }
+}
+
+class NotificationPage extends StatefulWidget{
+  State<NotificationPage> createState() => _NotificationPage();
+}
+
+class _NotificationPage extends State<NotificationPage>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: ListView.separated(
+          itemCount: 12,
+          itemBuilder: (context, index){
+            return ListTile(
+              leading: Icon(Icons.notifications_active),
+              title: Text("Notification ${index+1}"),
+              subtitle: Text("Ini notifikasi indeks ke ${index+1}"),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+              onTap: (){
+                print("notif ke ${index+1} ditekan");
+              },
+            );
+          },
+        separatorBuilder: (context, index) => Divider(
+          color: Colors.grey[200],
+          thickness: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class BookmarkPage extends StatefulWidget{
+  State<BookmarkPage> createState() => _BookmarkPage();
+}
+
+class _BookmarkPage extends State<BookmarkPage> {
+  final Map<String?, List<String>> bookmarks = {
+    "Artikel Teknologi" : [
+      "Flutter : Panduan Bagi Pemula",
+    ],
+    "Resep Makanan" : [
+      "Ayam Goreng Bumbu Kalasan",
+      "Tahu Kriuk",
+      "Brownies Coklat Lezat"
+    ],
+    null : ["Ide Proyek Sederhana", "Tips Produktivitas", "Climate for Change"]
+  };
+
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     backgroundColor: Colors.grey[50],
+     body: ListView(
+       children: bookmarks.entries.map((entry) {
+         final kategori = entry.key ?? "Tanpa Kategori";
+         return ExpansionTile(
+           title: Text(
+             kategori,
+             style: TextStyle(fontWeight: FontWeight.bold),
+           ),
+           shape: Border.all(color: Colors.transparent),
+           collapsedShape: Border.all(color: Colors.transparent),
+           children: entry.value.map((item) {
+             return ListTile(
+               title: Text(item),
+               leading: Icon(Icons.bookmark),
+               onTap: () {
+                 ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(content: Text("Membuka: $item")),
+                 );
+               },
+             );
+           }).toList(),
+         );
+       }).toList(),
+     ),
+   );
+ }
+}
+
+class ProfilePage extends StatefulWidget{
+  State<ProfilePage> createState() => _ProfilePage();
+}
+
+class _ProfilePage extends State<ProfilePage> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return DefaultTabController(length: 2,
+        child: Scaffold(
+          // appBar: AppBar(
+          //   backgroundColor: Colors.red[400],
+          //   title: Text(
+          //     "User Name",
+          //     style: TextStyle(color: Colors.grey[50]),
+          //   ),
+          //   centerTitle: true,
+          // ),
+          body: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Colors.red[400],
+                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+                ),
+                child: Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage("https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600"),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              print("Ganti foto profil diklik!");
+                            },
+                            child: CircleAvatar(
+                              radius: 14,
+                              backgroundColor: Colors.black54,
+                              child: Icon(Icons.camera_alt, size: 16, color: Colors.white),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text("User Name", style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[50]
+                    ),),
+                    Text("Email@google.com", style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[50]
+                    ),),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text("50",
+                              style: TextStyle(
+                                  color: Colors.grey[50],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20
+                              ),),
+                            Text("Postingan",
+                              style: TextStyle(
+                                  color: Colors.grey[50],
+                                  fontSize: 14
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 40,),
+                        Column(
+                          children: [
+                            Text("1.2k", style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey[50],
+                                fontWeight: FontWeight.bold
+                            ),),
+                            Text("Followers", style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[50]
+                            ),)
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.grey[50],
+                child: TabBar(
+                    labelColor: Colors.black,
+                    indicatorColor: Colors.red[400],
+                    labelStyle: TextStyle(fontSize: 16, ),
+                    tabs: [
+                      Tab(text: "Your Posts",) ,
+                      Tab(text: "Likes",)
+                    ]
+                ),
+              ),
+              Expanded(
+                  child: Container(
+                    color: Colors.grey[50],
+                    child: TabBarView(
+                        children: [
+                          Center(child: Text("Daftar Postingan")),
+                          Center(child: Text("Daftar Like")),
+                        ]
+                    ),
+                  )
+              )
+            ],
+          ),
+        ),
+    );
+  }
+}
