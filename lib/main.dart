@@ -5,7 +5,7 @@ void main() {
 }
 
 class MikronoteApp extends StatelessWidget {
-  
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -51,7 +51,7 @@ class _HalamanUtama extends State<HalamanUtama>{
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SettingPage())
                 );
-              }, 
+              },
               icon: Icon(Icons.settings))
         ],
         backgroundColor: Colors.red[400],
@@ -317,7 +317,7 @@ class _DetailPage extends State<DetailPage>{
       isFollowing = !isFollowing;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -359,7 +359,7 @@ class _DetailPage extends State<DetailPage>{
                   ),
                 ),
                 SizedBox(height: 10,),
-                
+
                 ElevatedButton(
                     onPressed: toggleFollow,
                     style: ElevatedButton.styleFrom(
@@ -423,6 +423,7 @@ class _DetailPage extends State<DetailPage>{
     );
   }
 }
+
 class HomePage extends StatefulWidget{
   State<HomePage> createState() => _HomePage();
 }
@@ -476,7 +477,7 @@ class _HomePage extends State<HomePage> {
             final post = posts[index];
             return Container(
               width: double.infinity,
-              margin: EdgeInsets.symmetric(vertical: 2),
+              margin: EdgeInsets.symmetric(vertical: 1),
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.grey[50],
@@ -604,6 +605,7 @@ class _NotificationPage extends State<NotificationPage>{
         separatorBuilder: (context, index) => Divider(
           color: Colors.grey[200],
           thickness: 1,
+          height: 1,
         ),
       ),
     );
@@ -664,128 +666,489 @@ class ProfilePage extends StatefulWidget{
 }
 
 class _ProfilePage extends State<ProfilePage> {
+
+  final List<Map<String, dynamic>> my_posts = [
+    {
+      "username": "Your Name",
+      "date": "1 Januari 2024",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro! Ea blanditiis reiciendis ut incidunt saepe qui nesciunt mollitia. In laboriosam cupiditate ab officiis quidem a tempora assumenda At voluptas rerum est animi dolorum?",
+      "img_links": [
+        "https://images.pexels.com/photos/1009841/pexels-photo-1009841.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/175695/pexels-photo-175695.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2373520/pexels-photo-2373520.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2638026/pexels-photo-2638026.jpeg?auto=compress&cs=tinysrgb&w=600"
+      ]
+    },
+    {
+      "username": "Your Name",
+      "date": "12 July 2024",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.""",
+      "img_links": [
+        "https://images.pexels.com/photos/887850/pexels-photo-887850.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/1579926/pexels-photo-1579926.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://th.bing.com/th?q=Makanan+Manis&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.3&pid=InlineBlock&mkt=en-ID&cc=ID&setlang=en&adlt=strict&t=1&mw=247",
+      ],
+    },
+    {
+      "username": "Your Name",
+      "date": "13 Desember 2022",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Et dolor reprehenderit et nisi suscipit id saepe cupiditate quo voluptate perferendis est quidem voluptas. Sed inventore repellat est dolor consequatur a molestiae molestiae cum quisquam inventore vel impedit culpa et nulla dolore?",
+      "img_links": [
+        "https://images.pexels.com/photos/2638026/pexels-photo-2638026.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2373520/pexels-photo-2373520.jpeg?auto=compress&cs=tinysrgb&w=600"
+      ],
+    }
+  ];
+
+  final List<Map<String, dynamic>> liked_posts = [
+    {
+      "username": "Eka<3",
+      "date": "2 Januari 2024",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Lorem ipsum dolor sit amet. Et provident voluptatum aut nobis earum rem omnis consectetur hic nemo excepturi eum explicabo nisi aut velit quam et obcaecati internos.",
+      "img_links": [],
+    },
+    {
+      "username" : "Farra Sabiila",
+      "date" : "9 Maret 2025",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
+      "img_links": [],
+    },
+    {
+      "username": "Sirrich",
+      "date": "13 Desember 2022",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Et dolor reprehenderit et nisi suscipit id saepe cupiditate quo voluptate perferendis est quidem voluptas. Sed inventore repellat est dolor consequatur a molestiae molestiae cum quisquam inventore vel impedit culpa et nulla dolore?",
+      "img_links": [],
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return DefaultTabController(length: 2,
+    return DefaultTabController(
+        length: 2,
         child: Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: Colors.red[400],
-          //   title: Text(
-          //     "User Name",
-          //     style: TextStyle(color: Colors.grey[50]),
-          //   ),
-          //   centerTitle: true,
-          // ),
-          body: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    color: Colors.red[400],
-                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
-                ),
-                child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+          body: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrooled) => [
+                SliverToBoxAdapter(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        color: Colors.red[400],
+                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))
+                    ),
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage("https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600"),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              print("Ganti foto profil diklik!");
-                            },
-                            child: CircleAvatar(
-                              radius: 14,
-                              backgroundColor: Colors.black54,
-                              child: Icon(Icons.camera_alt, size: 16, color: Colors.white),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage("https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600"),
                             ),
-                          ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  print("Ganti foto profil diklik!");
+                                },
+                                child: CircleAvatar(
+                                  radius: 14,
+                                  backgroundColor: Colors.black54,
+                                  child: Icon(Icons.camera_alt, size: 16, color: Colors.white),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Text("User Name", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.grey[50])),
+                        Text("Email@google.com", style: TextStyle(fontSize: 16, color: Colors.grey[50])),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                Text("50", style: TextStyle(color: Colors.grey[50], fontWeight: FontWeight.bold, fontSize: 20)),
+                                Text("Posts", style: TextStyle(color: Colors.grey[50], fontSize: 14)),
+                              ],
+                            ),
+                            SizedBox(width: 40),
+                            Column(
+                              children: [
+                                Text("1.2k", style: TextStyle(fontSize: 20, color: Colors.grey[50], fontWeight: FontWeight.bold)),
+                                Text("Followers", style: TextStyle(fontSize: 14, color: Colors.grey[50])),
+                              ],
+                            )
+                          ],
                         )
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    Text("User Name", style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[50]
-                    ),),
-                    Text("Email@google.com", style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[50]
-                    ),),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Text("50",
-                              style: TextStyle(
-                                  color: Colors.grey[50],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20
-                              ),),
-                            Text("Postingan",
-                              style: TextStyle(
-                                  color: Colors.grey[50],
-                                  fontSize: 14
+                  ),
+                ),
+                SliverPersistentHeader(
+                    delegate: _TabBarDelegate(
+                      TabBar(
+                        tabs: [
+                          Tab(text: "Your Posts",),
+                          Tab(text: "Likes",),
+                        ],
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.red[400],
+                      )
+                    ),
+                  pinned: true,
+                )
+              ],
+              body: TabBarView(
+                  children: [
+                    ListView.builder(
+                        itemCount: my_posts.length,
+                        itemBuilder: (context, index){
+                          final myposts = my_posts[index];
+                          return Column(
+                            children: [
+                              Container(
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(vertical: 2),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[50],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor: Colors.grey,
+                                            child: Icon(Icons.person),
+                                          ),
+                                          SizedBox(width: 20,),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(myposts["username"]!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                                Text(myposts["date"]!, style: TextStyle(color: Colors.grey[500], fontSize: 12),)
+                                              ],
+                                            ),
+                                          ),
+                                          PopupMenuButton(itemBuilder: (context)=>[
+                                            PopupMenuItem(child: Text("Delete")),
+                                            PopupMenuItem(child: Text("Archive")),
+                                          ],
+                                            icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Text(
+                                        myposts["title"]!, style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        myposts["content"]!,
+                                      ),
+                                      SizedBox(height: 16,),
+                                      PostImageGrid(imgLinks: myposts["img_links"]),
+                                      SizedBox(height: 10,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Icon(Icons.favorite_border,
+                                                  color: Colors.grey[600], size: 20),
+                                            ],
+                                          ),
+                                          SizedBox(width: 20),
+                                          Column(
+                                            children: [
+                                              Icon(Icons.comment_outlined,
+                                                  size: 20, color: Colors.grey[600]),
+                                            ],
+                                          ),
+                                          SizedBox(width: 20),
+                                          Column(
+                                            children: [
+                                              Icon(Icons.share_outlined,
+                                                  size: 20, color: Colors.grey[600]),
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  )
+                              ),
+                              if (index != my_posts.length-1) Divider(height: 1,thickness: 2, color: Colors.grey[200],)
+                            ],
+                          );
+                        }
+                    ),
+                    // Tab ke 2
+                    ListView.builder(
+                        itemCount: liked_posts.length,
+                        itemBuilder: (context, index){
+                          final likedposts = liked_posts[index];
+                          return Column(
+                            children: [
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(vertical: 2),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[50],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: Colors.grey,
+                                        child: Icon(Icons.person),
+                                      ),
+                                      SizedBox(width: 20,),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(likedposts["username"]!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                            Text(likedposts["date"]!, style: TextStyle(color: Colors.grey[500], fontSize: 12),)
+                                          ],
+                                        ),
+                                      ),
+                                      PopupMenuButton(itemBuilder: (context)=>[
+                                        PopupMenuItem(child: Text("Delete")),
+                                        PopupMenuItem(child: Text("Archive")),
+                                      ],
+                                        icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text(
+                                    likedposts["title"]!, style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    likedposts["content"]!,
+                                  ),
+                                  SizedBox(height: 16,),
+                                  PostImageGrid(imgLinks: likedposts["img_links"]),
+                                  SizedBox(height: 10,),                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Icon(Icons.favorite,
+                                              color: Colors.red[600], size: 20),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        children: [
+                                          Icon(Icons.comment_outlined,
+                                              size: 20, color: Colors.grey[600]),
+                                        ],
+                                      ),
+                                      SizedBox(width: 20),
+                                      Column(
+                                        children: [
+                                          Icon(Icons.share_outlined,
+                                              size: 20, color: Colors.grey[600]),
+                                        ],
+                                      ),
+                                      Spacer(),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(width: 40,),
-                        Column(
-                          children: [
-                            Text("1.2k", style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.grey[50],
-                                fontWeight: FontWeight.bold
-                            ),),
-                            Text("Followers", style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[50]
-                            ),)
-                          ],
-                        )
-                      ],
+                              if (index != liked_posts.length-1) Divider(height: 1,thickness: 2, color: Colors.grey[200],)
+                            ],
+                          );
+                        }
                     )
-                  ],
-                ),
-              ),
-              Container(
-                color: Colors.grey[50],
-                child: TabBar(
-                    labelColor: Colors.black,
-                    indicatorColor: Colors.red[400],
-                    labelStyle: TextStyle(fontSize: 16, ),
-                    tabs: [
-                      Tab(text: "Your Posts",) ,
-                      Tab(text: "Likes",)
-                    ]
-                ),
-              ),
-              Expanded(
-                  child: Container(
-                    color: Colors.grey[50],
-                    child: TabBarView(
-                        children: [
-                          Center(child: Text("Daftar Postingan")),
-                          Center(child: Text("Daftar Like")),
-                        ]
-                    ),
-                  )
+                  ]
               )
-            ],
           ),
+        )
+    );
+  }
+}
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar _tabBar;
+
+  _TabBarDelegate(this._tabBar);
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // TODO: implement build
+    return Container(
+      color: Colors.grey[50],
+      child: _tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
+
+}
+
+class PostImageGrid extends StatelessWidget {
+  final dynamic imgLinks;
+
+  const PostImageGrid({ Key? key, required this.imgLinks});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    List<String> images = [];
+
+    if (imgLinks is List){
+      images = List<String>.from(imgLinks);
+    } else if (imgLinks is String && imgLinks.isNotEmpty){
+      images = [imgLinks];
+    }
+
+    if (images.isEmpty) return SizedBox();
+
+    if (images.length == 1) {
+      return Padding(
+          padding: const EdgeInsets.only(top: 10),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+          images[0],
+          width: double.infinity,
+          height: 200,
+          fit: BoxFit.cover,
         ),
+        )
+      );
+    }
+
+    if (images.length == 3) {
+      final double halfWidth = MediaQuery.of(context).size.width / 2;
+
+      return Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Row(
+          children: [
+            // Gambar 1 (kiri - tinggi 400)
+            Container(
+              width: halfWidth,
+              height: 400,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  images[0],
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(width: 4),
+            // Kolom kanan: img2 atas, img3 bawah
+            Flexible(
+                child: Column(
+                  children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          images[1],
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: double.infinity,
+                        ),
+                      ),
+                    SizedBox(height: 4),
+                        ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          images[2],
+                          fit: BoxFit.cover,
+                          height: 200,
+                          width: double.infinity,
+                        ),
+                      ),
+                  ],
+                )
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: images.length > 4 ? 4 : images.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, 
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4
+          ),
+          itemBuilder: (context, index) {
+            bool isLAstImage = index == 3 && images.length > 4;
+            
+            return Stack(
+              fit : StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    images[index],
+                    fit: BoxFit.cover
+                  ),
+                ),
+                if (isLAstImage)
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                    alignment: Alignment.center,
+                    child: Text('+${images.length - 3}',
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                      ),
+                  )
+              ],
+            );
+          },
+      ),
     );
   }
 }
