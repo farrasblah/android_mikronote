@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'post_image_grid.dart';
 
 void main() {
   runApp(MikronoteApp());
@@ -320,105 +321,144 @@ class _DetailPage extends State<DetailPage>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red[400],
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
-            ),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                    "https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600",
-                  ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red[400],
+          title: Text("Profile"),
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            
+            SliverToBoxAdapter(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.red[400],
+                  borderRadius:
+                  BorderRadius.vertical(bottom: Radius.circular(16)),
                 ),
-                SizedBox(height: 10,),
-                Text(
-                  widget.username,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[50],
-                  ),
-                ),
-                Text(
-                  "Email@google.com",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[50],
-                  ),
-                ),
-                SizedBox(height: 10,),
-
-                ElevatedButton(
-                    onPressed: toggleFollow,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.red[400],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                        "https://images.pexels.com/photos/208984/pexels-photo-208984.jpeg?auto=compress&cs=tinysrgb&w=600",
                       ),
                     ),
-                    child: Text(isFollowing ? "Following" : "Follow"))
-                ,
-                SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          "50",
-                          style: TextStyle(
-                            color: Colors.grey[50],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                    SizedBox(height: 10),
+                    Text(
+                      widget.username,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[50],
+                      ),
+                    ),
+                    Text(
+                      "Email@google.com",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[50],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: toggleFollow,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.red[400],
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        Text(
-                          "Postingan",
-                          style: TextStyle(
-                            color: Colors.grey[50],
-                            fontSize: 14,
-                          ),
+                      ),
+                      child: Text(isFollowing ? "Following" : "Follow"),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "50",
+                              style: TextStyle(
+                                  color: Colors.grey[50],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            Text(
+                              "Postingan",
+                              style: TextStyle(
+                                  color: Colors.grey[50], fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 40),
+                        Column(
+                          children: [
+                            Text(
+                              "1.2k",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey[50],
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "Followers",
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[50]),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Column(
-                      children: [
-                        Text(
-                          "1.2k",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.grey[50],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Followers",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[50],
-                          ),
-                        ),
-                      ],
-                    )
                   ],
-                )
-              ],
+                ),
+              ),
             ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _TabBarDelegate(
+                TabBar(
+                  tabs: [
+                    Tab(text: "Posts"),
+                    Tab(text: "Likes"),
+                  ],
+                  labelColor: Colors.black,
+                  indicatorColor: Colors.red[400],
+                ),
+              ),
+            ),
+          ],
+          body: TabBarView(
+            children: [
+              //tab 1
+              ListView(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Posts")
+                    ],
+                  )
+                ],
+              ),
+              // tab 2
+              ListView(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Likes")
+                    ],
+                  )
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -430,32 +470,51 @@ class HomePage extends StatefulWidget{
 
 class _HomePage extends State<HomePage> {
 
-  final List<Map<String, String>> posts = [
+  final List<Map<String, dynamic>> posts = [
     {
       "username" : "Alissa Rania",
       "date" : "12 Januari 2025",
       "title" : "Lorem ipsum dolor sit amet",
-      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro! Ea blanditiis reiciendis ut incidunt saepe qui nesciunt mollitia. In laboriosam cupiditate ab officiis quidem a tempora assumenda At voluptas rerum est animi dolorum?"
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro! Ea blanditiis reiciendis ut incidunt saepe qui nesciunt mollitia. In laboriosam cupiditate ab officiis quidem a tempora assumenda At voluptas rerum est animi dolorum?",
+      "comments" : [
+        {
+          "username": "komentator1",
+          "text": "Komentar utama 1",
+        }
+      ]
     },
     {
       "username" : "Farra Sabiila",
       "date" : "9 Maret 2025",
       "title" : "Lorem ipsum dolor sit amet",
-      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!"
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
+      "comments" : []
     },
     {
       "username" : "Anieen",
       "date" : "1 Maret 2025",
       "title" : "Lorem ipsum dolor sit amet",
-      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!"
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
+      "comments" : []
     },
     {
       "username" : "AbeAbeAbe",
       "date" : "1 Oktober 2024",
       "title" : "Lorem ipsum dolor sit amet",
-      "content" : "Lorem ipsum dolor sit amet. Eum dolores assumenda vel eveniet natus et voluptas molestiae et quas sint hic veritatis odit et obcaecati nihil et quia odio. Nam ipsum possimus 33 odio laudantium aut expedita iste rem pariatur unde ut voluptatibus doloremque."
+      "content" : "Lorem ipsum dolor sit amet. Eum dolores assumenda vel eveniet natus et voluptas molestiae et quas sint hic veritatis odit et obcaecati nihil et quia odio. Nam ipsum possimus 33 odio laudantium aut expedita iste rem pariatur unde ut voluptatibus doloremque.",
+      "comments" : []
     },
   ];
+
+  List<bool> favorites = [];
+  List<bool> bookmarks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    favorites = List<bool>.filled(posts.length, false);
+    bookmarks = List<bool>.filled(posts.length, false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -543,37 +602,58 @@ class _HomePage extends State<HomePage> {
                     children: [
                       Column(
                         children: [
-                          Icon(Icons.favorite_border,
-                              color: Colors.grey[600], size: 20),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                favorites[index] = !favorites[index];
+                              });
+                            },
+                            child: Icon(
+                              favorites[index]? Icons.favorite : Icons.favorite_border,
+                              color: favorites[index]? Colors.red : Colors.grey[600],
+                              size: 25,
+                            ),
+                          )
                         ],
                       ),
                       SizedBox(width: 20),
                       Column(
                         children: [
                           Icon(Icons.comment_outlined,
-                              size: 20, color: Colors.grey[600]),
+                              size: 25, color: Colors.grey[600]),
                         ],
                       ),
                       SizedBox(width: 20),
                       Column(
                         children: [
                           Icon(Icons.share_outlined,
-                              size: 20, color: Colors.grey[600]),
+                              size: 25, color: Colors.grey[600]),
                         ],
                       ),
                       Spacer(),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                bookmarks[index] = !bookmarks[index];
+                              });
+                            },
+                            child: Icon(
+                              bookmarks[index] ? Icons.bookmark : Icons.bookmark_border,
+                              color: Colors.grey[600],
+                              size: 25,
+                            ),
+                          ),
                         ],
                       )
                     ],
-                  )
+                  ),
                 ],
               ),
             );
-          }
+          },
       ),
     );
   }
@@ -728,12 +808,21 @@ class _ProfilePage extends State<ProfilePage> {
     }
   ];
 
+  List<bool> favorites = [];
+
+  @override
+  void initState() {
+    super.initState();
+    favorites = List<bool>.filled(my_posts.length, false);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+          backgroundColor: Colors.grey[50],
           body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrooled) => [
                 SliverToBoxAdapter(
@@ -811,6 +900,7 @@ class _ProfilePage extends State<ProfilePage> {
               ],
               body: TabBarView(
                   children: [
+                    // tab ke 1
                     ListView.builder(
                         itemCount: my_posts.length,
                         itemBuilder: (context, index){
@@ -867,29 +957,39 @@ class _ProfilePage extends State<ProfilePage> {
                                         children: [
                                           Column(
                                             children: [
-                                              Icon(Icons.favorite_border,
-                                                  color: Colors.grey[600], size: 20),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  setState(() {
+                                                    favorites[index] = !favorites[index];
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  favorites[index] ? Icons.favorite : Icons.favorite_border,
+                                                  color: favorites[index] ? Colors.red : Colors.grey[600],
+                                                  size: 25,
+                                                ),
+                                              )
                                             ],
                                           ),
                                           SizedBox(width: 20),
                                           Column(
                                             children: [
                                               Icon(Icons.comment_outlined,
-                                                  size: 20, color: Colors.grey[600]),
+                                                  size: 25, color: Colors.grey[600]),
                                             ],
                                           ),
                                           SizedBox(width: 20),
                                           Column(
                                             children: [
                                               Icon(Icons.share_outlined,
-                                                  size: 20, color: Colors.grey[600]),
+                                                  size: 25, color: Colors.grey[600]),
                                             ],
                                           ),
                                           Spacer(),
                                           Column(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                                              Icon(Icons.bookmark_add_outlined, color: Colors.grey[600], size: 25,)
                                             ],
                                           )
                                         ],
@@ -959,28 +1059,28 @@ class _ProfilePage extends State<ProfilePage> {
                                       Column(
                                         children: [
                                           Icon(Icons.favorite,
-                                              color: Colors.red[600], size: 20),
+                                              color: Colors.red[600], size: 25),
                                         ],
                                       ),
                                       SizedBox(width: 20),
                                       Column(
                                         children: [
                                           Icon(Icons.comment_outlined,
-                                              size: 20, color: Colors.grey[600]),
+                                              size: 25, color: Colors.grey[600]),
                                         ],
                                       ),
                                       SizedBox(width: 20),
                                       Column(
                                         children: [
                                           Icon(Icons.share_outlined,
-                                              size: 20, color: Colors.grey[600]),
+                                              size: 25, color: Colors.grey[600]),
                                         ],
                                       ),
                                       Spacer(),
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600],)
+                                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600], size: 25,)
                                         ],
                                       )
                                     ],
@@ -1026,129 +1126,4 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
 
 }
 
-class PostImageGrid extends StatelessWidget {
-  final dynamic imgLinks;
 
-  const PostImageGrid({ Key? key, required this.imgLinks});
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    List<String> images = [];
-
-    if (imgLinks is List){
-      images = List<String>.from(imgLinks);
-    } else if (imgLinks is String && imgLinks.isNotEmpty){
-      images = [imgLinks];
-    }
-
-    if (images.isEmpty) return SizedBox();
-
-    if (images.length == 1) {
-      return Padding(
-          padding: const EdgeInsets.only(top: 10),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-          images[0],
-          width: double.infinity,
-          height: 200,
-          fit: BoxFit.cover,
-        ),
-        )
-      );
-    }
-
-    if (images.length == 3) {
-      final double halfWidth = MediaQuery.of(context).size.width / 2;
-
-      return Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Row(
-          children: [
-            // Gambar 1 (kiri - tinggi 400)
-            Container(
-              width: halfWidth,
-              height: 400,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  images[0],
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(width: 4),
-            // Kolom kanan: img2 atas, img3 bawah
-            Flexible(
-                child: Column(
-                  children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          images[1],
-                          fit: BoxFit.cover,
-                          height: 200,
-                          width: double.infinity,
-                        ),
-                      ),
-                    SizedBox(height: 4),
-                        ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          images[2],
-                          fit: BoxFit.cover,
-                          height: 200,
-                          width: double.infinity,
-                        ),
-                      ),
-                  ],
-                )
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: images.length > 4 ? 4 : images.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, 
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4
-          ),
-          itemBuilder: (context, index) {
-            bool isLAstImage = index == 3 && images.length > 4;
-            
-            return Stack(
-              fit : StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    images[index],
-                    fit: BoxFit.cover
-                  ),
-                ),
-                if (isLAstImage)
-                  Container(
-                    color: Colors.black.withOpacity(0.5),
-                    alignment: Alignment.center,
-                    child: Text('+${images.length - 3}',
-                      style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                      ),
-                  )
-              ],
-            );
-          },
-      ),
-    );
-  }
-}
