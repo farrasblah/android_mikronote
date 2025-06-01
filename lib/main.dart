@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'post_image_grid.dart';
+import 'comment.dart';
 
 void main() {
   runApp(MikronoteApp());
@@ -271,7 +272,7 @@ class NewPostPage extends StatelessWidget{
         child: TextField(
           autofocus: true,
           decoration: InputDecoration(
-            hintText: "Apa yang kamu pikirkan",
+            hintText: "What are you thinking about",
             border: InputBorder.none
           ),
           style: TextStyle(fontSize: 15),
@@ -303,14 +304,42 @@ class ChangeProfilePage extends StatelessWidget{
 }
 
 class DetailPage extends StatefulWidget{
-  final String username;
 
-  DetailPage({required this.username});
+  final Map<String, dynamic> post;
+
+  DetailPage({required this.post});
 
   _DetailPage createState() => _DetailPage();
 }
 
-class _DetailPage extends State<DetailPage>{
+class _DetailPage extends State<DetailPage> {
+  final List<Map<String, dynamic>> liked_posts = [
+    {
+      "username": "Eka<3",
+      "date": "2 Januari 2024",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Lorem ipsum dolor sit amet. Et provident voluptatum aut nobis earum rem omnis consectetur hic nemo excepturi eum explicabo nisi aut velit quam et obcaecati internos.",
+      "img_links": [
+        "https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/126407/pexels-photo-126407.jpeg?auto=compress&cs=tinysrgb&w=800"
+      ],
+    },
+    {
+      "username" : "Farra Sabiila",
+      "date" : "9 Maret 2025",
+      "title" : "Lorem ipsum dolor sit amet",
+      "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
+      "img_links": [],
+    },
+    {
+      "username": "Sirrich",
+      "date": "13 Desember 2022",
+      "title": "Lorem ipsum dolor sit amet",
+      "content": "Et dolor reprehenderit et nisi suscipit id saepe cupiditate quo voluptate perferendis est quidem voluptas. Sed inventore repellat est dolor consequatur a molestiae molestiae cum quisquam inventore vel impedit culpa et nulla dolore?",
+      "img_links": [],
+    }
+  ];
+
   bool isFollowing = false;
 
   void toggleFollow() {
@@ -321,6 +350,7 @@ class _DetailPage extends State<DetailPage>{
 
   @override
   Widget build(BuildContext context) {
+    final post = widget.post;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -330,15 +360,13 @@ class _DetailPage extends State<DetailPage>{
         ),
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            
             SliverToBoxAdapter(
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: Colors.red[400],
-                  borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(16)),
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
                 ),
                 child: Column(
                   children: [
@@ -350,7 +378,7 @@ class _DetailPage extends State<DetailPage>{
                     ),
                     SizedBox(height: 10),
                     Text(
-                      widget.username,
+                      post["username"],
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -358,7 +386,7 @@ class _DetailPage extends State<DetailPage>{
                       ),
                     ),
                     Text(
-                      "Email@google.com",
+                      "${post["username"].toLowerCase().replaceAll(' ', '')}@example.com",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[50],
@@ -390,8 +418,7 @@ class _DetailPage extends State<DetailPage>{
                             ),
                             Text(
                               "Postingan",
-                              style: TextStyle(
-                                  color: Colors.grey[50], fontSize: 14),
+                              style: TextStyle(color: Colors.grey[50], fontSize: 14),
                             ),
                           ],
                         ),
@@ -407,8 +434,7 @@ class _DetailPage extends State<DetailPage>{
                             ),
                             Text(
                               "Followers",
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[50]),
+                              style: TextStyle(fontSize: 14, color: Colors.grey[50]),
                             ),
                           ],
                         ),
@@ -434,27 +460,186 @@ class _DetailPage extends State<DetailPage>{
           ],
           body: TabBarView(
             children: [
-              //tab 1
-              ListView(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Posts")
-                    ],
-                  )
-                ],
+              // Tab 1: Posts
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 2),
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.grey,
+                                child: Icon(Icons.person),
+                              ),
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      post["username"]!,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                    Text(
+                                      post["date"]!,
+                                      style: TextStyle(
+                                          color: Colors.grey[500], fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuButton(
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(child: Text("Delete")),
+                                  PopupMenuItem(child: Text("Archive")),
+                                ],
+                                icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            post["title"]!,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(post["content"]!),
+                          SizedBox(height: 16),
+                          PostImageGrid(imgLinks: post["img_links"]),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.favorite_border, color: Colors.grey[600], size: 25),
+                              SizedBox(width: 20),
+                              Icon(Icons.comment_outlined, color: Colors.grey[600], size: 25,),
+                              SizedBox(width: 20),
+                              Icon(Icons.share_outlined, size: 25, color: Colors.grey[600]),
+                              Spacer(),
+                              Icon(Icons.bookmark_outline, color: Colors.grey[600], size: 25),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              // tab 2
-              ListView(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Likes")
-                    ],
-                  )
-                ],
+
+              // Tab 2: Likes
+              ListView.builder(
+                  itemCount: liked_posts.length,
+                  itemBuilder: (context, index){
+                    final likedposts = liked_posts[index];
+                    return Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.symmetric(vertical: 2),
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 24,
+                                    backgroundColor: Colors.grey,
+                                    child: Icon(Icons.person),
+                                  ),
+                                  SizedBox(width: 20,),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(likedposts["username"]!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                        Text(likedposts["date"]!, style: TextStyle(color: Colors.grey[500], fontSize: 12),)
+                                      ],
+                                    ),
+                                  ),
+                                  PopupMenuButton(itemBuilder: (context)=>[
+                                    PopupMenuItem(child: Text("Delete")),
+                                    PopupMenuItem(child: Text("Archive")),
+                                  ],
+                                    icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 10,),
+                              Text(
+                                likedposts["title"]!, style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                likedposts["content"]!,
+                              ),
+                              SizedBox(height: 16,),
+                              PostImageGrid(imgLinks: likedposts["img_links"]),
+                              SizedBox(height: 10,),                                  Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Icon(Icons.favorite,
+                                          color: Colors.red[600], size: 25),
+                                    ],
+                                  ),
+                                  SizedBox(width: 20),
+                                  Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                backgroundColor: Colors.transparent,
+                                                builder: (context) => CommentBottomSheet(post: likedposts),
+                                              );
+                                            },
+                                            child: Icon(Icons.comment_outlined, size: 25, color: Colors.grey[600]),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 20),
+                                  Column(
+                                    children: [
+                                      Icon(Icons.share_outlined,
+                                          size: 25, color: Colors.grey[600]),
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.bookmark_outline, color: Colors.grey[600], size: 25,)
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        if (index != liked_posts.length-1) Divider(height: 1,thickness: 2, color: Colors.grey[200],)
+                      ],
+                    );
+                  }
               ),
             ],
           ),
@@ -476,11 +661,12 @@ class _HomePage extends State<HomePage> {
       "date" : "12 Januari 2025",
       "title" : "Lorem ipsum dolor sit amet",
       "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro! Ea blanditiis reiciendis ut incidunt saepe qui nesciunt mollitia. In laboriosam cupiditate ab officiis quidem a tempora assumenda At voluptas rerum est animi dolorum?",
-      "comments" : [
-        {
-          "username": "komentator1",
-          "text": "Komentar utama 1",
-        }
+      "img_links": [
+        "https://images.pexels.com/photos/1009841/pexels-photo-1009841.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/175695/pexels-photo-175695.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2373520/pexels-photo-2373520.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2638026/pexels-photo-2638026.jpeg?auto=compress&cs=tinysrgb&w=600"
       ]
     },
     {
@@ -488,21 +674,28 @@ class _HomePage extends State<HomePage> {
       "date" : "9 Maret 2025",
       "title" : "Lorem ipsum dolor sit amet",
       "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
-      "comments" : []
+      "img_links": [
+       "https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2373520/pexels-photo-2373520.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/2638026/pexels-photo-2638026.jpeg?auto=compress&cs=tinysrgb&w=600"
+      ]
     },
     {
       "username" : "Anieen",
       "date" : "1 Maret 2025",
       "title" : "Lorem ipsum dolor sit amet",
       "content" : "Lorem ipsum dolor sit amet. Quo porro iste eos voluptatum ducimus aut mollitia excepturi quo eius laboriosam et similique mollitia et dolor quas id quis deserunt. Ut harum rerum in voluptatem dolores ut voluptate perspiciatis aut quia pariatur vel voluptatibus porro!",
-      "comments" : []
+      "img_links": [
+        "https://images.pexels.com/photos/1009841/pexels-photo-1009841.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/175695/pexels-photo-175695.jpeg?auto=compress&cs=tinysrgb&w=600",
+       ]
     },
     {
       "username" : "AbeAbeAbe",
       "date" : "1 Oktober 2024",
       "title" : "Lorem ipsum dolor sit amet",
       "content" : "Lorem ipsum dolor sit amet. Eum dolores assumenda vel eveniet natus et voluptas molestiae et quas sint hic veritatis odit et obcaecati nihil et quia odio. Nam ipsum possimus 33 odio laudantium aut expedita iste rem pariatur unde ut voluptatibus doloremque.",
-      "comments" : []
+      "img_links": []
     },
   ];
 
@@ -558,8 +751,11 @@ class _HomePage extends State<HomePage> {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => DetailPage(username:post["username"]!))
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailPage(post: post),
+                                    ),
                                   );
                                 },
                                 child : Text(
@@ -597,6 +793,8 @@ class _HomePage extends State<HomePage> {
                     post["content"]!,
                   ),
                   SizedBox(height: 16,),
+                  PostImageGrid(imgLinks: post["img_links"]),
+                  SizedBox(height: 16,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -619,8 +817,21 @@ class _HomePage extends State<HomePage> {
                       SizedBox(width: 20),
                       Column(
                         children: [
-                          Icon(Icons.comment_outlined,
-                              size: 25, color: Colors.grey[600]),
+                          Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) => CommentBottomSheet(post: post),
+                                  );
+                                },
+                                child: Icon(Icons.comment_outlined, size: 25, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       SizedBox(width: 20),
@@ -790,7 +1001,10 @@ class _ProfilePage extends State<ProfilePage> {
       "date": "2 Januari 2024",
       "title": "Lorem ipsum dolor sit amet",
       "content": "Lorem ipsum dolor sit amet. Et provident voluptatum aut nobis earum rem omnis consectetur hic nemo excepturi eum explicabo nisi aut velit quam et obcaecati internos.",
-      "img_links": [],
+      "img_links": [
+        "https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/126407/pexels-photo-126407.jpeg?auto=compress&cs=tinysrgb&w=800"
+      ],
     },
     {
       "username" : "Farra Sabiila",
@@ -974,14 +1188,27 @@ class _ProfilePage extends State<ProfilePage> {
                                           SizedBox(width: 20),
                                           Column(
                                             children: [
-                                              Icon(Icons.comment_outlined,
-                                                  size: 25, color: Colors.grey[600]),
+                                              Column(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        isScrollControlled: true,
+                                                        backgroundColor: Colors.transparent,
+                                                        builder: (context) => CommentBottomSheet(post: myposts),
+                                                      );
+                                                    },
+                                                    child: Icon(Icons.comment_outlined, size: 25, color: Colors.grey[600]),
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
                                           SizedBox(width: 20),
                                           Column(
                                             children: [
-                                              Icon(Icons.share_outlined,
+                                              Icon(Icons.share_rounded,
                                                   size: 25, color: Colors.grey[600]),
                                             ],
                                           ),
@@ -989,7 +1216,7 @@ class _ProfilePage extends State<ProfilePage> {
                                           Column(
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
-                                              Icon(Icons.bookmark_add_outlined, color: Colors.grey[600], size: 25,)
+                                              Icon(Icons.bookmark_border, color: Colors.grey[600], size: 25,)
                                             ],
                                           )
                                         ],
@@ -1065,8 +1292,21 @@ class _ProfilePage extends State<ProfilePage> {
                                       SizedBox(width: 20),
                                       Column(
                                         children: [
-                                          Icon(Icons.comment_outlined,
-                                              size: 25, color: Colors.grey[600]),
+                                          Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    backgroundColor: Colors.transparent,
+                                                    builder: (context) => CommentBottomSheet(post: likedposts),
+                                                  );
+                                                },
+                                                child: Icon(Icons.comment_outlined, size: 25, color: Colors.grey[600]),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                       SizedBox(width: 20),
@@ -1080,7 +1320,7 @@ class _ProfilePage extends State<ProfilePage> {
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          Icon(Icons.bookmark_add_outlined, color: Colors.grey[600], size: 25,)
+                                          Icon(Icons.bookmark_outline, color: Colors.grey[600], size: 25,)
                                         ],
                                       )
                                     ],
