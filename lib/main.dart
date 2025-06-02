@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'post_image_grid.dart';
 import 'comment.dart';
+import 'splash_screen.dart';
 
 void main() {
   runApp(MikronoteApp());
@@ -12,7 +13,7 @@ class MikronoteApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: HalamanUtama(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
