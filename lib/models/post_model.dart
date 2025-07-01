@@ -7,6 +7,7 @@ class Post {
   final DateTime date;
   final String title;
   final String email;
+  final String avatar;
 
   Post({
     required this.username,
@@ -14,7 +15,8 @@ class Post {
     required this.img_links,
     required this.date,
     required this.title,
-    required this.email
+    required this.email,
+    required this.avatar
   });
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -26,7 +28,8 @@ class Post {
       content: json['caption'],
       img_links: List<String>.from(json['images']),
       date: formatter.parse(json['created_at']),
-      email: json['email']
+      email: json['email'],
+      avatar: json['avatar']
     );
   }
 
@@ -37,7 +40,8 @@ class Post {
       "title": title,
       "content": content,
       "img_links": img_links,
-      "email": email
+      "email": email,
+      "avatar": avatar
     };
   }
 }

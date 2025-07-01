@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'pages/splash_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:mikronote/pages/home_page.dart';
 import 'package:mikronote/pages/profil_page.dart';
 import 'package:mikronote/pages/bookmark_page.dart';
 import 'package:mikronote/pages/notification_page.dart';
 import 'package:mikronote/pages/settings_page.dart';
+import 'package:mikronote/pages/search_page.dart';
 
 void main() {
   runApp(MikronoteApp());
@@ -17,7 +17,7 @@ class MikronoteApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: SplashScreen(),
+      home: HalamanUtama(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -34,6 +34,7 @@ class _HalamanUtama extends State<HalamanUtama>{
 
   final List<Widget> _pages = [
     HomePage(),
+    SearchPage(),
     NotificationPage(),
     BookmarkPage(),
     ProfilePage(),
@@ -50,7 +51,7 @@ class _HalamanUtama extends State<HalamanUtama>{
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar:  _selectedIndex == 3
+      appBar:  _selectedIndex == 4
         ? AppBar(
         actions: [
           IconButton(
@@ -89,6 +90,7 @@ class _HalamanUtama extends State<HalamanUtama>{
           )
         ),
       drawer: _selectedIndex == 3 ? null : Drawer(
+        backgroundColor: Colors.grey[50],
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -128,20 +130,19 @@ class _HalamanUtama extends State<HalamanUtama>{
           onTap: _onTappedItem,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: ''
+                icon: Icon(Icons.home), label: ''
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: ''
+                icon: Icon(Icons.search), label: ''
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark),
-                label: ''
+                icon: Icon(Icons.notifications_rounded), label: ''
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person_rounded),
-                label: ''
+                icon: Icon(Icons.bookmark), label: ''
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person), label: ''
             ),
           ]
         ),

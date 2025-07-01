@@ -25,7 +25,7 @@ class PostImageGrid extends StatelessWidget {
           child: Image.network(
             images[0],
             width: double.infinity,
-            height: 200,
+            height: 400,
             fit: BoxFit.cover,
           ),
         ),

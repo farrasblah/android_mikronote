@@ -29,6 +29,8 @@ class _BookmarkPage extends State<BookmarkPage> {
               kategori,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            iconColor: Colors.grey[600],
+            collapsedIconColor: Colors.grey[600],
             shape: Border.all(color: Colors.transparent),
             collapsedShape: Border.all(color: Colors.transparent),
             children: entry.value.map((item) {
@@ -48,3 +50,5 @@ class _BookmarkPage extends State<BookmarkPage> {
     );
   }
 }
+
+

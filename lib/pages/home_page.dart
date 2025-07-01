@@ -81,8 +81,17 @@ class _HomePage extends State<HomePage> {
                   children: [
                     CircleAvatar(
                       radius: 24,
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.person),
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: post.avatar.isNotEmpty
+                          ? NetworkImage(post.avatar)
+                          : null,
+                      child: post.avatar.isEmpty
+                          ? Icon(Icons.person, color: Colors.grey[600])
+                          : null,
+                      onBackgroundImageError: post.avatar.isNotEmpty
+                          ? (exception, stackTrace) {
+                      }
+                      : null,
                     ),
                     SizedBox(width: 20),
                     Expanded(
